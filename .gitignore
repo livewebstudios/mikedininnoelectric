@@ -1,12 +1,24 @@
 # ─────────────────────────────────────────────
-# Track ONLY the deployable build/ folder.
-# Everything else (docs, source PSDs, assets,
-# tooling, _unused dead files) stays local.
+# Repo root = the deployable site (index.html at root).
+# Everything below is kept LOCAL only, never pushed.
 # ─────────────────────────────────────────────
-/*
-!/.gitignore
-!/build/
 
-# OS junk inside build/
+# Docs & source
+/INSTRUCTIONS.md
+/content.md
+/PRODUCT.md
+/DESIGN.md
+/assets/
+/animation/
+
+# Dead / unused files
+/notused/
+
+# Tooling & local agent state
+/.claude/
+/.impeccable/
+/ui-ux-pro-max-skill-2.5.0/
+
+# OS junk
 **/.DS_Store
 **/desktop.ini
