@@ -2548,3 +2548,111 @@ h3, h4, h5, h6,
 .why-mike-eyebrow    { font-size: 0.92rem; font-weight: 400; color: var(--color-accent); }
 .why-mike-item strong{ font-size: 1rem; font-weight: 700; letter-spacing: 0.03em; color: #fff; }
 .why-mike-item p     { font-size: 0.92rem; font-weight: 400; }
+
+
+/* ████████████████████████████████████████████████████████████
+   ABOUT 2-COLUMN FEATURE SECTIONS + TAB FIX + SERVICES LIST + FORM
+   ████████████████████████████████████████████████████████████ */
+
+/* ---- About: image + text, 2-column ---- */
+.about-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.about-feature-text { text-align: left; }
+.about-feature-text .eyebrow { margin-bottom: 0.75rem; }
+.about-feature-text h2 { text-align: left; margin-bottom: 1rem; }
+.about-feature-text p { text-align: left; }
+.about-feature-img {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 1px solid rgba(0,200,255,0.15);
+  box-shadow: 0 0 40px rgba(0,200,255,0.08), inset 0 0 60px rgba(0,200,255,0.04);
+  aspect-ratio: 4 / 3;
+}
+.about-feature-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* certifications grid sits inside the text column now */
+.about-feature .cert-grid { grid-template-columns: 1fr 1fr; margin-top: 1.5rem; max-width: none; }
+@media (max-width: 768px) {
+  .about-feature { grid-template-columns: 1fr; gap: 1.5rem; }
+  .about-feature--img-right .about-feature-img { order: 2; }
+  .about-feature--img-right .about-feature-text { order: 1; }
+  .about-feature .cert-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---- TABS: make them obviously clickable tabs ---- */
+.tab-list {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-bottom: none;
+  margin-bottom: 2rem;
+}
+.tab-btn {
+  font-family: 'Inter','Albert Sans',Arial,sans-serif !important;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.85rem 1.75rem;
+  margin-bottom: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tab-btn::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--color-text-dim);
+  transition: all 0.2s ease;
+}
+.tab-btn:hover {
+  color: #fff;
+  border-color: rgba(0,200,255,0.45);
+  background: rgba(0,200,255,0.06);
+}
+.tab-btn.active {
+  color: #000;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 20px rgba(0,200,255,0.35);
+}
+.tab-btn.active::before { background: #000; box-shadow: 0 0 6px rgba(0,0,0,0.4); }
+
+/* ---- Services full list: bigger, Inter, readable ---- */
+.full-services-grid li {
+  font-family: 'Inter','Albert Sans',Arial,sans-serif !important;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  padding: 1rem 1.1rem;
+}
+
+/* ---- Contact form fields: medium-grey visible border ---- */
+.contact-form input,
+.contact-form textarea {
+  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.02);
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: rgba(255,255,255,0.5); }
+.contact-form input:hover,
+.contact-form textarea:hover { border-color: rgba(255,255,255,0.42); }
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0,200,255,0.18);
+}
