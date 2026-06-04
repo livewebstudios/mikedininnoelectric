@@ -159,43 +159,67 @@
 .nav-toggle.active span:nth-child(2) { opacity: 0; }
 .nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+/* ============================================================
+   MOBILE NAV — authoritative full-screen overlay
+   (single source of truth; loads after style.css so it wins)
+   ============================================================ */
 @media (max-width: 992px) {
-  .nav-toggle { display: inline-flex; }
+  .nav-toggle { display: inline-flex; position: relative; z-index: 1205; }
+
+  /* When the menu is open, lift the whole nav (and its full-screen
+     menu child) ABOVE the topbar so the overlay covers everything.
+     This fixes the stacking trap where the topbar (z 1001) showed
+     on top of the menu. */
+  body.menu-open .site-nav {
+    z-index: 1200;
+    background: transparent !important;
+    border-bottom-color: transparent;
+  }
+  body.menu-open .topbar   { opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
+  body.menu-open .nav-logo { opacity: 0; pointer-events: none; }
+
   .nav-menu {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: min(360px, 100vw);
-    background: rgba(5,5,5,0.98);
-    backdrop-filter: blur(12px);
+    inset: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 25%, rgba(0,200,255,0.10) 0%, transparent 60%),
+      #050505;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
-    padding: calc(var(--nav-height) + 1rem) 1.5rem 2rem;
     gap: 0;
+    padding: calc(var(--topbar-height) + var(--nav-height) + 1.25rem) 1.75rem 2rem;
     transform: translateX(100%);
     transition: transform 0.35s ease;
     overflow-y: auto;
-    border-left: 1px solid var(--color-border);
+    z-index: 1100;
+    border: none;
   }
   .nav-menu.open { transform: translateX(0); }
+
   .nav-menu > li { width: 100%; border-bottom: 1px solid var(--color-border); }
   .nav-menu > li > a,
   .nav-menu > li > button {
     width: 100%;
     justify-content: space-between;
-    padding: 1.1rem 0.5rem;
+    padding: 1.15rem 0.25rem;
     border-radius: 0;
-    font-size: 1rem;
+    font-size: 1.05rem;
+    color: #fff;
   }
+
   .nav-dropdown {
     position: static;
     width: 100%;
     background: transparent;
     border: none;
     box-shadow: none;
-    margin-top: 0;
+    margin: 0;
     padding: 0 0 0.5rem 1rem;
     opacity: 0;
     visibility: hidden;
@@ -204,15 +228,24 @@
     transform: none;
     transition: max-height 0.3s ease, opacity 0.3s ease, visibility 0.3s;
   }
-  .has-dropdown:hover .nav-dropdown { /* disable hover on mobile */
-    opacity: 0; visibility: hidden; max-height: 0;
+  .has-dropdown:hover .nav-dropdown { opacity: 0; visibility: hidden; max-height: 0; }
+  .has-dropdown.open .nav-dropdown { opacity: 1; visibility: visible; max-height: 800px; }
+  .nav-dropdown a { padding: 0.65rem 0.5rem; font-size: 0.85rem; color: var(--color-text-muted); }
+
+  /* X close button pinned top-right, above the open menu */
+  body.menu-open .nav-toggle {
+    position: fixed;
+    top: calc(var(--topbar-height) + (var(--nav-height) - 40px) / 2);
+    right: 5%;
+    z-index: 1205;
+    background: rgba(0,0,0,0.5);
   }
-  .has-dropdown.open .nav-dropdown {
-    opacity: 1;
-    visibility: visible;
-    max-height: 600px;
-  }
-  .nav-dropdown a { padding: 0.6rem 0.5rem; font-size: 0.8rem; }
+}
+
+@media (max-width: 600px) {
+  .nav-menu { padding-top: calc(var(--topbar-height) + var(--nav-height) + 1rem); }
+  .nav-menu > li > a,
+  .nav-menu > li > button { font-size: 1rem; }
 }
 
 /* Prevent body scroll when mobile menu open */
