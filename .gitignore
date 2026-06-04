@@ -1,23 +1,6 @@
-# ─────────────────────────────────────────────
-# Repo root = the deployable site (index.html at root).
-# Everything below is kept LOCAL only, never pushed.
-# ─────────────────────────────────────────────
-
-# Docs & source
-/INSTRUCTIONS.md
-/content.md
-/PRODUCT.md
-/DESIGN.md
-/assets/
-/animation/
-
-# Dead / unused files
-/notused/
-
-# Tooling & local agent state
-/.claude/
-/.impeccable/
-/ui-ux-pro-max-skill-2.5.0/
+# This repo IS the deployable site (the build/ folder).
+# All docs, source assets, and non-essentials live in the
+# PARENT directory, outside this repo entirely.
 
 # OS junk
 **/.DS_Store
