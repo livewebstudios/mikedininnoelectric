@@ -1,0 +1,399 @@
+/* ============================================================
+   BACKGROUNDS — Electric Storm system
+   BG01 Lightning Grid | BG02 Circuit Board | BG03 Plasma Arc
+   BG04 Voltage Hazard | BG05 Thermal Power
+   ============================================================ */
+
+/* Base body atmosphere — subtle radial wash */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 0%, rgba(0,200,255,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 30%, rgba(123,47,255,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(0,200,255,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.03) 0px,
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.4;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Shared bg-effect wrapper */
+.bg-effect {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.bg-effect > .bg-content { position: relative; z-index: 2; }
+.bg-effect > .bg-layer,
+.bg-effect > canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Legacy bg-2/bg-3 — used by page-hero only */
+.bg-2 {
+  position: relative;
+  background: linear-gradient(180deg, var(--color-bg) 0%, #050505 100%);
+}
+.bg-2::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(123,47,255,0.12) 0%, transparent 40%),
+    radial-gradient(circle at 10% 90%, rgba(0,200,255,0.1) 0%, transparent 40%);
+  z-index: 0; pointer-events: none;
+}
+.bg-3 { background: var(--color-bg-alt); position: relative; }
+section.bg-2 > *,
+section.bg-3 > * { position: relative; z-index: 2; }
+.page-hero.bg-2::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  opacity: 0.6; z-index: 1;
+}
+
+
+/* ============================================================
+   BG01 — LIGHTNING GRID
+   <div id="hero-lightning" class="bg-effect bg-lightning">
+     <div class="bg-layer bg-grid"></div>
+     <div class="bg-layer bg-glow"></div>
+     <div class="bg-layer bg-bolt"></div>
+     <div class="bg-layer bg-bolt b2"></div>
+     <div class="bg-content">…section content…</div>
+   </div>
+   ============================================================ */
+#hero-lightning,
+.bg-lightning { background: #060608; }
+
+.bg-lightning .bg-grid {
+  background-image:
+    linear-gradient(rgba(0,200,255,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,255,0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 25%, transparent 95%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 25%, transparent 95%);
+  animation: gridDrift 30s linear infinite;
+}
+@keyframes gridDrift {
+  0%   { background-position: 0 0, 0 0; }
+  100% { background-position: 56px 56px, 56px 56px; }
+}
+
+.bg-lightning .bg-glow {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,200,255,0.16) 0%, transparent 35%),
+    radial-gradient(circle at 80% 60%, rgba(123,47,255,0.12) 0%, transparent 45%);
+}
+
+.bg-lightning .bg-bolt {
+  background:
+    linear-gradient(105deg,
+      transparent 47%,
+      rgba(0,200,255,0.0) 48%,
+      rgba(255,255,255,0.85) 49.5%,
+      rgba(0,200,255,0.9) 50%,
+      rgba(123,47,255,0.4) 50.7%,
+      transparent 52%);
+  background-size: 200% 200%;
+  opacity: 0;
+  animation: boltA 9s ease-in-out infinite;
+}
+.bg-lightning .bg-bolt.b2 {
+  background:
+    linear-gradient(75deg,
+      transparent 62%,
+      rgba(123,47,255,0.3) 64%,
+      rgba(0,200,255,0.85) 65%,
+      rgba(255,255,255,0.7) 65.5%,
+      transparent 68%);
+  background-size: 200% 200%;
+  animation: boltB 11s ease-in-out infinite;
+  animation-delay: 3.5s;
+}
+@keyframes boltA {
+  0%, 88%, 100% { opacity: 0; }
+  89%           { opacity: 0.95; }
+  90%           { opacity: 0; }
+  91%           { opacity: 0.65; }
+  92%           { opacity: 0; }
+}
+@keyframes boltB {
+  0%, 75%, 100% { opacity: 0; }
+  76%           { opacity: 0.85; }
+  77%           { opacity: 0; }
+  78.5%         { opacity: 0.55; }
+  79.5%         { opacity: 0; }
+}
+
+
+/* ============================================================
+   BG02 — CIRCUIT BOARD
+   <div id="hero-circuit" class="bg-effect bg-circuit">
+     <div class="bg-layer bg-glow"></div>
+     <canvas id="circuit-canvas"></canvas>
+     <div class="bg-content">…</div>
+   </div>
+   Palette: NEON GREEN per JS.
+   ============================================================ */
+#hero-circuit,
+.bg-circuit { background: #050608; }
+
+.bg-circuit .bg-glow {
+  background:
+    radial-gradient(circle at 30% 70%, rgba(57,255,20,0.06) 0%, transparent 45%),
+    radial-gradient(circle at 75% 25%, rgba(0,200,255,0.06) 0%, transparent 40%);
+}
+
+#circuit-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* BG02 RED variant — green → red via hue-rotate + dark overlay
+   Add class="bg-circuit-red" on the #hero-circuit wrapper. */
+.bg-circuit.bg-circuit-red { background: #0a0606; }
+.bg-circuit.bg-circuit-red #circuit-canvas {
+  filter: hue-rotate(252deg) saturate(1.25) brightness(0.78);
+}
+.bg-circuit.bg-circuit-red .bg-glow {
+  background:
+    radial-gradient(circle at 30% 70%, rgba(255,40,40,0.10) 0%, transparent 45%),
+    radial-gradient(circle at 75% 25%, rgba(200,30,30,0.08) 0%, transparent 40%);
+}
+.bg-circuit.bg-circuit-red::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 50%, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%);
+}
+
+
+/* ============================================================
+   BG03 — PLASMA ARC
+   <div id="hero-plasma" class="bg-effect bg-plasma">
+     <div class="bg-layer plasma-orb p1"></div>
+     <div class="bg-layer plasma-orb p2"></div>
+     <div class="bg-layer plasma-orb p3"></div>
+     <div class="bg-layer plasma-arc"></div>
+     <div class="bg-content">…</div>
+   </div>
+   ============================================================ */
+#hero-plasma,
+.bg-plasma { background: #060509; }
+
+.bg-plasma .plasma-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  pointer-events: none;
+}
+.bg-plasma .plasma-orb.p1 {
+  width: 520px; height: 520px;
+  top: -10%; left: -8%;
+  inset: auto;
+  background: radial-gradient(circle, rgba(0,200,255,0.55) 0%, rgba(0,200,255,0) 70%);
+  animation: plasmaDriftA 18s ease-in-out infinite alternate;
+}
+.bg-plasma .plasma-orb.p2 {
+  width: 600px; height: 600px;
+  bottom: -15%; right: -10%; top: auto; left: auto;
+  inset: auto;
+  background: radial-gradient(circle, rgba(123,47,255,0.5) 0%, rgba(123,47,255,0) 70%);
+  animation: plasmaDriftB 22s ease-in-out infinite alternate;
+}
+.bg-plasma .plasma-orb.p3 {
+  width: 380px; height: 380px;
+  top: 30%; left: 55%;
+  inset: auto;
+  background: radial-gradient(circle, rgba(0,200,255,0.35) 0%, rgba(0,200,255,0) 70%);
+  animation: plasmaDriftC 16s ease-in-out infinite alternate;
+}
+@keyframes plasmaDriftA {
+  0%   { transform: translate(0, 0)         scale(1); }
+  100% { transform: translate(8%, 12%)      scale(1.15); }
+}
+@keyframes plasmaDriftB {
+  0%   { transform: translate(0, 0)         scale(1); }
+  100% { transform: translate(-10%, -8%)    scale(1.2); }
+}
+@keyframes plasmaDriftC {
+  0%   { transform: translate(0, 0)         scale(0.9); }
+  100% { transform: translate(-14%, 10%)    scale(1.15); }
+}
+.bg-plasma .plasma-arc {
+  background:
+    radial-gradient(ellipse 80% 30% at 50% 50%, rgba(0,200,255,0.05) 0%, transparent 70%);
+}
+
+
+/* ============================================================
+   BG04 — VOLTAGE HAZARD
+   <div id="hero-voltage" class="bg-effect bg-voltage">
+     <div class="bg-layer hazard-stripes"></div>
+     <div class="bg-layer bg-glow"></div>
+     <div id="sparks-container"></div>
+     <div class="bg-content">…</div>
+   </div>
+   ============================================================ */
+#hero-voltage,
+.bg-voltage {
+  background: #0a0805;
+  border-top: 1px solid rgba(255,69,0,0.25);
+  border-bottom: 1px solid rgba(255,69,0,0.25);
+}
+
+.bg-voltage .hazard-stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255,180,0,0.10) 0px,
+    rgba(255,180,0,0.10) 30px,
+    rgba(8,5,2,0.55) 30px,
+    rgba(8,5,2,0.55) 60px
+  );
+  opacity: 0.85;
+  mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 100% 80% at 50% 50%, #000 40%, transparent 100%);
+}
+
+.bg-voltage .bg-glow {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255,69,0,0.15) 0%, transparent 70%);
+}
+
+#sparks-container {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.spark {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow:
+    0 0 6px rgba(255,200,80,0.95),
+    0 0 14px rgba(255,140,40,0.7);
+  opacity: 0;
+  animation: sparkFly 1.2s ease-out forwards;
+}
+@keyframes sparkFly {
+  0%   { opacity: 1; transform: translate(0,0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx, 40px), var(--dy, -60px)) scale(0.4); }
+}
+
+/* Toned-down variant for contact page */
+.bg-voltage.bg-voltage-soft {
+  border-top: none;
+  border-bottom: none;
+}
+.bg-voltage.bg-voltage-soft .hazard-stripes { opacity: 0.42; }
+.bg-voltage.bg-voltage-soft .bg-glow {
+  background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255,69,0,0.06) 0%, transparent 70%);
+}
+
+
+/* ============================================================
+   BG05 — THERMAL POWER
+   <div id="hero-thermal" class="bg-effect bg-thermal">
+     <div class="bg-layer thermal-wash"></div>
+     <div id="power-lines"></div>
+     <div id="heat-nodes"></div>
+     <div class="bg-content">…</div>
+   </div>
+   bg-effects.js spawns .node into #heat-nodes and .pline into #power-lines.
+   ============================================================ */
+#hero-thermal,
+.bg-thermal { background: #060709; }
+
+.bg-thermal .thermal-wash {
+  background:
+    radial-gradient(circle at 18% 28%, rgba(255,80,0,0.10) 0%, transparent 32%),
+    radial-gradient(circle at 78% 72%, rgba(0,200,255,0.12) 0%, transparent 32%),
+    radial-gradient(circle at 50% 50%, rgba(123,47,255,0.06) 0%, transparent 50%);
+}
+
+#power-lines {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.pline {
+  position: absolute;
+  left: 20%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(0,200,255,0) 15%,
+    rgba(0,200,255,0.55) 50%,
+    rgba(0,200,255,0) 85%,
+    transparent 100%);
+  background-size: 50% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.55;
+  animation: plineSweep 6s linear infinite;
+}
+@keyframes plineSweep {
+  0%   { background-position: -50% 0; }
+  100% { background-position: 150% 0; }
+}
+
+#heat-nodes {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+#heat-nodes .node {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(8px);
+  opacity: 0.7;
+  animation: nodePulse 3s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+@keyframes nodePulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+  50%      { opacity: 0.95; transform: scale(1.25); }
+}
+
+
+/* ============================================================
+   Reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .bg-lightning .bg-grid,
+  .bg-lightning .bg-bolt,
+  .bg-plasma .plasma-orb,
+  #heat-nodes .node,
+  .pline,
+  .spark { animation: none !important; }
+}

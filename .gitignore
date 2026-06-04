@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+**/.DS_Store
+desktop.ini
+**/desktop.ini
+
+# Tooling / local agent state
+.claude/
+.impeccable/
+ui-ux-pro-max-skill-2.5.0/
+
+# Heavy source files (kept locally, not in repo)
+animation/
+assets/*.psd
+**/*.psd
+
+# Cropped-image backups
+**/*-original.png
+**/*-raw.png
+
+# Node (if ever added)
+node_modules/

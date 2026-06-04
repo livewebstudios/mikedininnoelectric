@@ -1,0 +1,52 @@
+/* ============================================================
+   ANIMATIONS — IntersectionObserver-driven
+   ============================================================ */
+
+.fade-in,
+.fade-in-up,
+.slide-in-left,
+.slide-in-right {
+  opacity: 0;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.fade-in-up    { transform: translateY(30px); }
+.slide-in-left { transform: translateX(-40px); }
+.slide-in-right { transform: translateX(40px); }
+
+.fade-in.is-visible,
+.fade-in-up.is-visible,
+.slide-in-left.is-visible,
+.slide-in-right.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger helpers — set inline style="--i:N" */
+[style*="--i:"] { transition-delay: calc(var(--i) * 80ms); }
+
+/* Continuous accent animations */
+@keyframes pulseAccent {
+  0%, 100% { box-shadow: 0 0 20px rgba(0,200,255,0.3); }
+  50%      { box-shadow: 0 0 35px rgba(0,200,255,0.55); }
+}
+.pulse-accent { animation: pulseAccent 3s ease-in-out infinite; }
+
+@keyframes arcLightning {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .fade-in-up,
+  .slide-in-left,
+  .slide-in-right {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .pulse-accent { animation: none; }
+}
