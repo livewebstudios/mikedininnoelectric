@@ -1912,23 +1912,23 @@ main      { padding-top: calc(var(--nav-height) + var(--topbar-height)); }
    ============================================================ */
 .nav-logo img {
   max-width: none !important;
-  height: 72px;
-  max-height: 72px;
+  height: 48px;
+  max-height: 48px;
 }
 .footer-logo img {
-  max-width: 480px;
+  max-width: 240px;
   width: 100%;
 }
 
 /* Mobile — scale down so it still fits the narrower viewport */
 @media (max-width: 992px) {
-  .nav-logo img { height: 60px; max-height: 60px; }
+  .nav-logo img { height: 44px; max-height: 44px; }
 }
 @media (max-width: 600px) {
-  .nav-logo img { height: 48px; max-height: 48px; }
+  .nav-logo img { height: 40px; max-height: 40px; }
 }
 @media (max-width: 420px) {
-  .nav-logo img { height: 40px; max-height: 40px; }
+  .nav-logo img { height: 36px; max-height: 36px; }
 }
 
 
