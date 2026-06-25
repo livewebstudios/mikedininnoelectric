@@ -1402,12 +1402,12 @@ main      { padding-top: calc(var(--nav-height) + var(--topbar-height)); }
    (header height stays at --nav-height: 72px)
    ============================================================ */
 .nav-logo img {
-  height: 72px;       /* fills 72px nav with no wasted space */
-  max-height: 72px;
+  height: 68px;       /* fills 72px nav with 2px breathing room top/bottom */
+  max-height: 68px;
   width: auto;
 }
 @media (max-width: 720px) {
-  .nav-logo img { height: 60px; max-height: 60px; }
+  .nav-logo img { height: 56px; max-height: 56px; }
 }
 
 
@@ -1534,16 +1534,18 @@ main      { padding-top: calc(var(--nav-height) + var(--topbar-height)); }
 }
 .footer-logo img {
   width: 100%;
-  max-width: 560px;
+  max-width: 480px;
   margin-bottom: 1.25rem;
 }
 @media (max-width: 992px) {
   .footer-grid { grid-template-columns: 1fr 1fr; }
-  .footer-logo img { max-width: 480px; }
+  .footer-logo img { max-width: 420px; }
 }
 @media (max-width: 768px) {
   .footer-grid { grid-template-columns: 1fr; }
-  .footer-logo img { max-width: 420px; }
+  .footer-logo img { max-width: 360px; }
+}
+
 
 /* ============================================================
    HERO LIGHTNING GRID — applies to any #hero-lightning element
@@ -2288,10 +2290,10 @@ h1, h2, h3, h4, h5, h6,
 
 /* Home hero color logo — smaller */
 .hero-logo-col img {
-  max-width: 420px;
+  max-width: 300px;       /* down from 380px */
 }
 @media (max-width: 900px) {
-  .hero-logo-col img { max-width: 280px; }
+  .hero-logo-col img { max-width: 200px; }
 }
 
 
